@@ -1,0 +1,24 @@
+<ion-content class="ion-padding content">
+  <img class="icon" src="assets/icon/graphic2.svg" alt="">
+  <form [formGroup]='loginForm'>
+    <ion-item>
+      <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
+      <ion-input type="number" placeholder="Enter Mobile No." name="mobileNo" formControlName="mobileNo"></ion-input>
+    </ion-item>
+    <ion-item>
+    <ion-input type="number" placeholder="Enter Otp" formControlName="code" ></ion-input>
+  </ion-item>
+    <ion-button class="ion-margin-top" expand="block" type="submit" (click)="send(loginForm.value)">Send Otp</ion-button>
+    <ion-button class="ion-margin-top" expand="block" (click)="verify(loginForm.value)">Verify</ion-button>
+  </form>
+
+  <ion-grid>
+  	<ion-row>
+  		<ion-col size="3">
+  			<ion-button class="google" (click)="loginGoogle()">
+  				<ion-icon name="logo-google"></ion-icon>
+  			</ion-button>
+  		</ion-col>
+  	</ion-row>
+  </ion-grid>
+</ion-content>

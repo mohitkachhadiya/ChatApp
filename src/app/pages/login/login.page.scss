@@ -1,0 +1,23 @@
+.icon{
+    max-width: 32vh;
+    display: block;
+    margin: 0 auto;
+    padding-top: 100px;
+}
+
+ion-input, ion-item{
+    --background: transparent;
+}
+ion-content{
+    --background: aliceblue;
+}
+
+.text-danger{
+    color: #cf3c4f;
+}
+.google{
+	--background: #DB4437; 
+}
+.content {
+	margin-top: 100px;
+}
