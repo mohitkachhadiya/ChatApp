@@ -8,9 +8,16 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { AngularFireModule } from "angularfire2";
+import { AngularFireModule } from "angularfire2/";
 import { environment } from '../environments/environment';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
+// import { FIREBASE_CONFIG } from "../environments/environment";
+import { AngularFireDatabaseModule } from "@angular/fire/database";
+// import { AngularFire} from 'angularfire2';
+import { AngularFirestoreModule, AngularFirestoreCollection } from 'angularfire2/firestore';
+  import * as firebase from 'firebase';
+
+firebase.initializeApp(environment.FIREBASE_CONFIG);
 
 
 @NgModule({
@@ -22,7 +29,10 @@ import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ng
   AppRoutingModule,
   FormsModule,
   ReactiveFormsModule,
-  AngularFireModule.initializeApp(environment.firebase, 'test')
+  AngularFireModule.initializeApp(environment.FIREBASE_CONFIG, 'test'),
+  // AngularFireModule,
+  AngularFireDatabaseModule,
+  AngularFirestoreModule
   ],
   providers: [
   StatusBar,

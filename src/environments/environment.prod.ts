@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  firebase : {
+  FIREBASE_CONFIG : {
   apiKey: "AIzaSyBXDR5fC32yXrp-iletGRKNv5dDvQ9nHzU",
   authDomain: "chatapp-f7979.firebaseapp.com",
   databaseURL: "https://chatapp-f7979.firebaseio.com",
@@ -10,4 +10,4 @@ export const environment = {
   appId: "1:407019985931:web:dcad50db2145ddba7d7b0e",
   measurementId: "G-NT5B4FQS41"
 }
-};
+}

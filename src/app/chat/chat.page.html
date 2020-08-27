@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div *ngFor="let chat of chats">
+
+    <!-- others chat -->
+
+    <ion-item lines="none" *ngIf="chat.uid != uid">
+      <ion-label class="ion-text-left">
+        <div class="text-box-left">
+          <p>{{name}}</p>
+          <h2>
+            <b>
+              {{chat.message}}
+            </b>
+          </h2>
+        </div>
+      </ion-label>
+    </ion-item>
+
+    <!-- My chat -->
+    
+    <ion-item lines="none" *ngIf="chat.uid != o_uid">
+      <ion-label class="ion-text-right">
+        <div class="text-box-right">
+          <p>You</p>
+          <h2>
+            <b>
+              {{chat.message}}
+            </b>
+          </h2>
+        </div>
+      </ion-label>
+    </ion-item>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <form [formGroup]='chatForm'>
+      <ion-item>
+        <ion-input formControlName="textMsg" placeholder="Type here..." (keyup.enter)="send()" ></ion-input>
+        <div class="elem"><button ion-button icon-only (click)="send(chatForm.value)" class="send" id="myInput"><ion-icon name="send"></ion-icon> </button></div>
+      </ion-item>
+    </form>
+  </ion-toolbar>
+
+
+<!-- <ion-footer>
+  <ion-toolbar>
+    <div id="footer">
+      <div class="elem"><ion-input type="text" [(ngModel)]="message"></ion-input></div>
+      <div class="elem"><button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button></div>
+    </div>
+  </ion-toolbar>
+</ion-footer> -->
+</ion-footer>

@@ -2,6 +2,14 @@
   <img class="icon" src="assets/icon/graphic2.svg" alt="">
   <form [formGroup]='loginForm'>
     <ion-item>
+      <ion-label position="stacked">Name. <span class="text-danger">*</span></ion-label>
+      <ion-input type="text" placeholder="Enter Your Name." name="mobileNo" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">User name. <span class="text-danger">*</span></ion-label>
+      <ion-input type="text" placeholder="Enter your Username." name="username" formControlName="username"></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
       <ion-input type="number" placeholder="Enter Mobile No." name="mobileNo" formControlName="mobileNo"></ion-input>
     </ion-item>

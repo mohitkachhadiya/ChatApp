@@ -1,20 +1,47 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Home 
     </ion-title>
+
+  <ion-buttons slot="end" routerLink="/login">
+      <ion-icon name="exit"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-list-header>
+    Profile
+  </ion-list-header>
+  <ion-item>
+    <ion-avatar slot="start">
+      <img src="assets/icon/graphic2.svg" alt="">
+    </ion-avatar>
+    <ion-label>
+      <h2>
+        <b>Mohit</b>
+      </h2>
+      <p>
+      Kachhadiya
+      </p>
+    </ion-label>
+  </ion-item>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list-header>
+    Users
+  </ion-list-header>
+  <ion-item lines="none" *ngFor="let user of users" (click)="gotoChat(user.uid, user)" button >
+    <ion-avatar slot="start">
+      <img src="assets/icon/graphic2.svg" alt="">
+    </ion-avatar>
+    <ion-label>
+      <h2>
+        <b>{{user.name}}</b>
+      </h2>
+      <p>
+      {{user.username}}
+      </p>
+    </ion-label>
+  </ion-item>
 </ion-content>

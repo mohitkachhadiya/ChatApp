@@ -2,7 +2,6 @@
     max-width: 32vh;
     display: block;
     margin: 0 auto;
-    padding-top: 100px;
 }
 
 ion-input, ion-item{
@@ -20,4 +19,8 @@ ion-content{
 }
 .content {
 	margin-top: 100px;
+}
+
+ion-item {
+	margin-top: 15px;
 }

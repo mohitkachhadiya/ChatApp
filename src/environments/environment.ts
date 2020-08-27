@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebase : {
+  FIREBASE_CONFIG : {
   apiKey: "AIzaSyBXDR5fC32yXrp-iletGRKNv5dDvQ9nHzU",
   authDomain: "chatapp-f7979.firebaseapp.com",
   databaseURL: "https://chatapp-f7979.firebaseio.com",

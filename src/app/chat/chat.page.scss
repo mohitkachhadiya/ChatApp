@@ -1,0 +1,56 @@
+#container {
+  text-align: center;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+ion-text-left{
+  float: left;
+}
+
+.send{
+  background: none;
+  font-size: 25px;
+  outline: none; 
+}
+
+
+.text-box-right{
+  background: lightgrey;
+    width: fit-content;
+    float: right;
+    padding: 3px 22px;
+    border-radius: 21px;
+    border-top-right-radius: 0px;
+}
+
+.text-box-left{
+  background: lightgrey;
+    width: fit-content;
+    float: left;
+    padding: 3px 22px;
+    border-radius: 21px;
+    border-top-left-radius: 0px;
+}

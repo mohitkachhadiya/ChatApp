@@ -4,7 +4,7 @@ import { FormGroup , FormControl, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
 import { Platform, NavController } from '@ionic/angular';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
-
+import { AngularFireDatabase } from "@angular/fire/database";
 
 @Component({
   selector: 'app-login',
@@ -18,17 +18,11 @@ export class LoginPage implements OnInit {
   phoneNumber: number;
   verificationID: string = "";
 
-  constructor(public router: Router, public navCtrl: NavController, public firebaseAuthentication: FirebaseAuthentication) { 
-    firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
-      if (user) {
-        console.log("the user is ==>", user);
-        navCtrl.navigateRoot(['/home'])
-      }
-      else {
-        navCtrl.navigateRoot(['/'])
-      }
-    })
+  constructor(public router: Router, public navCtrl: NavController, private firebaseAuthentication: FirebaseAuthentication, private afDB: AngularFireDatabase) { 
+
     this.loginForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
       mobileNo: new FormControl('', Validators.required),
       code: new FormControl('', Validators.required),
     });
@@ -56,7 +50,24 @@ export class LoginPage implements OnInit {
     let code = value.code.toString();
     console.log("the value of the otp is ==>", value, this.verificationID);
     this.firebaseAuthentication.signInWithVerificationId(this.verificationID, code).then((user)=>{
-      console.log(user)
+      console.log("the user is the ===>", user);
+
+      this.firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
+        // if (user) {
+          console.log("the user is ==>", user);
+          this.afDB.object("users/" + user.uid).set({
+            name: value.name,
+            username: value.username,
+            mobileNo: value.mobileNo,
+            createdAt: Date.now(),
+            uid: user.uid
+          }).then(() => {
+            localStorage.setItem('uid', JSON.stringify(user));
+            console.log("the demo is ====>", user);
+            this.navCtrl.navigateRoot(['/home'])
+          });
+
+        })
     });
     this.loginForm.reset();
   }
