@@ -34,6 +34,11 @@
     "cordova-support-android-plugin": "^1.0.2",
     "cordova-support-google-services": "^1.4.1",
     "firebase": "^7.19.0",
+    "intl-tel-input": "^17.0.3",
+    "intl-tel-input-mobile": "^1.0.6",
+    "ionic-tel-input": "^1.1.0",
+    "jquery": "^3.5.1",
+    "ng2-tel-input": "^2.3.0",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

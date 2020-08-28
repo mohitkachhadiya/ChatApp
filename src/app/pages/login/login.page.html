@@ -1,32 +1,44 @@
 <ion-content class="ion-padding content">
   <img class="icon" src="assets/icon/graphic2.svg" alt="">
-  <form [formGroup]='loginForm'>
-    <ion-item>
-      <ion-label position="stacked">Name. <span class="text-danger">*</span></ion-label>
-      <ion-input type="text" placeholder="Enter Your Name." name="mobileNo" formControlName="name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">User name. <span class="text-danger">*</span></ion-label>
-      <ion-input type="text" placeholder="Enter your Username." name="username" formControlName="username"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
-      <ion-input type="number" placeholder="Enter Mobile No." name="mobileNo" formControlName="mobileNo"></ion-input>
-    </ion-item>
-    <ion-item>
-    <ion-input type="number" placeholder="Enter Otp" formControlName="code" ></ion-input>
-  </ion-item>
-    <ion-button class="ion-margin-top" expand="block" type="submit" (click)="send(loginForm.value)">Send Otp</ion-button>
-    <ion-button class="ion-margin-top" expand="block" (click)="verify(loginForm.value)">Verify</ion-button>
-  </form>
 
-  <ion-grid>
-  	<ion-row>
-  		<ion-col size="3">
-  			<ion-button class="google" (click)="loginGoogle()">
-  				<ion-icon name="logo-google"></ion-icon>
-  			</ion-button>
-  		</ion-col>
-  	</ion-row>
-  </ion-grid>
+  <div *ngIf="!isActive">
+    <form [formGroup]='loginForm'>
+        <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
+        <ion-item>
+            <ion-select placeholder="+" formControlName="code" interface="popover">
+              <ion-label>Select Country Code</ion-label>
+              <div *ngFor="let i of countries" ><ion-select-option [value]=i.dial_code (click)="selectValue(i.dial_code)">{{i.dial_code}}</ion-select-option></div>
+        </ion-select>
+        <ion-input type="number" placeholder="Enter Your No..." name="mobileNo" formControlName="mobileNo" pattern="^((\\+91-?)|0)?[0-9]{10}$"></ion-input>
+  </ion-item>
+  <ion-button class="ion-margin-top" expand="block" type="submit" (click)="send(loginForm.value)">Send Otp</ion-button>
+</form>
+        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
+</div>
+
+<div *ngIf="isVerify">
+    <form [formGroup]='loginForm'>
+      <ion-item>
+        <ion-input type="number" placeholder="Enter Otp" formControlName="otp" ></ion-input>
+  </ion-item>
+  <ion-button class="ion-margin-top" expand="block" (click)="verify(loginForm.value)">Verify</ion-button>
+</form>
+        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
+</div>
+
+<div *ngIf="isUser">
+    <form [formGroup]='loginForm'>
+      <ion-item>
+        <ion-label position="stacked">Name. <span class="text-danger">*</span></ion-label>
+        <ion-input type="text" placeholder="Enter Your Name." name="mobileNo" formControlName="name"></ion-input>
+  </ion-item>
+  <ion-item>
+        <ion-label position="stacked">User name. <span class="text-danger">*</span></ion-label>
+        <ion-input type="text" placeholder="Enter your Username." name="username" formControlName="username"></ion-input>
+  </ion-item>
+  <ion-button class="ion-margin-top" expand="block" type="submit" (click)="sendDetail(loginForm.value)">Login</ion-button>
+</form>
+        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
+</div>
+
 </ion-content>

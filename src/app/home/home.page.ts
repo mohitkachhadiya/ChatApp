@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, AlertController } from '@ionic/angular';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
 import * as firebase from 'firebase';
 import { } from "@ionic/angular";
@@ -20,14 +20,27 @@ export class HomePage {
   userInfo;
 
   constructor(public navCtrl: NavController, public firebaseAuthentication: FirebaseAuthentication, private afs: AngularFirestore, 
-    public userService: UserService, private db: AngularFireDatabase) {
+    public userService: UserService, private db: AngularFireDatabase, public alertController: AlertController) {
 
     this.getdata();
     this.userInfo = JSON.parse(localStorage.getItem('uid'));
-
     console.log("the userInfo is the =======>", this.userInfo); 
-    this.uid = JSON.parse(localStorage.getItem("uid")).uid;
-    console.log("the uid is the ====>", this.uid);
+
+    firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
+      if (user) {
+        localStorage.setItem('uid', JSON.stringify(user));
+        console.log("the user is ==>", user);
+        navCtrl.navigateRoot(['/'])
+      }
+      else {
+        navCtrl.navigateRoot(['/login'])
+      }
+    });
+
+    if (localStorage.getItem('uid')) {
+      this.uid = JSON.parse(localStorage.getItem("uid")).uid;
+      console.log("the uid is the ====>", this.uid); 
+    }
   }
 
   gotoChat(uid, value){
@@ -43,15 +56,45 @@ export class HomePage {
       this.allUsers = data;
       console.log("subject", data);
 
-      data.filter((item:any, index) => {
-        console.log("the item is the ====>", item, index);
-        if (item.uid != this.userInfo.uid) {
-          console.log("the item of filter array is the ====>", item);
-          this.users[index] = item;
+      this.users = data.filter((userMessage:any, ind) => {
+        let flag = false
+        data.forEach((o_userMessage:any, index)=>{
+          if(userMessage.uid == this.uid){
+            flag = true
+            return false
+          }
+        });
+        if(!flag){
+          return userMessage
         }
-      })
+      });
     });
 
     console.log("the user data is the ======>", this.users);
+  }
+
+  async delete() {
+    const alert = await this.alertController.create({
+      header: 'Confirm!',
+      message: 'Are you sure want to delete this user?',
+      buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          console.log('cancel');
+        }
+      }, {
+        text: 'Okay',
+        handler: () => {
+          firebase.database().ref('users/'+this.uid).remove();
+          this.navCtrl.navigateForward(['/login']);
+        }
+      }
+      ]
+    });
+
+    await alert.present();
   }
 }

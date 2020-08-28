@@ -4,29 +4,13 @@
       Home 
     </ion-title>
 
-  <ion-buttons slot="end" routerLink="/login">
+  <ion-buttons slot="end" (click)="delete()">
       <ion-icon name="exit"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list-header>
-    Profile
-  </ion-list-header>
-  <ion-item>
-    <ion-avatar slot="start">
-      <img src="assets/icon/graphic2.svg" alt="">
-    </ion-avatar>
-    <ion-label>
-      <h2>
-        <b>Mohit</b>
-      </h2>
-      <p>
-      Kachhadiya
-      </p>
-    </ion-label>
-  </ion-item>
 
   <ion-list-header>
     Users

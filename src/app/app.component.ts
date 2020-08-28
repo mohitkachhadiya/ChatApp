@@ -24,22 +24,22 @@ export class AppComponent {
     public navCtrl: NavController,
     public db: AngularFireDatabase
     ) {
-    firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
-      if (user) {
-        localStorage.setItem('uid', JSON.stringify(user));
-        console.log("the user is ==>", user);
-        navCtrl.navigateRoot(['/home'])
-      }
-      else {
-        navCtrl.navigateRoot(['/'])
-      }
-    });
-
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+    //    this.firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
+    //   if (user) {
+    //     localStorage.setItem('uid', JSON.stringify(user));
+    //     console.log("the user is ==>", user);
+    //     this.navCtrl.navigateRoot(['/'])
+    //   }
+    //   else {
+    //     this.navCtrl.navigateRoot(['/login'])
+    //   }
+    // });
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

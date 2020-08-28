@@ -16,6 +16,8 @@ import { AngularFireDatabaseModule } from "@angular/fire/database";
 // import { AngularFire} from 'angularfire2';
 import { AngularFirestoreModule, AngularFirestoreCollection } from 'angularfire2/firestore';
   import * as firebase from 'firebase';
+import {Ng2TelInputModule} from 'ng2-tel-input';
+
 
 firebase.initializeApp(environment.FIREBASE_CONFIG);
 
@@ -32,7 +34,9 @@ firebase.initializeApp(environment.FIREBASE_CONFIG);
   AngularFireModule.initializeApp(environment.FIREBASE_CONFIG, 'test'),
   // AngularFireModule,
   AngularFireDatabaseModule,
-  AngularFirestoreModule
+  AngularFirestoreModule,
+  Ng2TelInputModule
+  // IonicTelInputModule
   ],
   providers: [
   StatusBar,

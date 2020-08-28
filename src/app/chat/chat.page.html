@@ -28,7 +28,7 @@
 
     <!-- My chat -->
     
-    <ion-item lines="none" *ngIf="chat.uid != o_uid">
+    <ion-item lines="none" *ngIf="chat.uid == uid">
       <ion-label class="ion-text-right">
         <div class="text-box-right">
           <p>You</p>
@@ -52,14 +52,4 @@
       </ion-item>
     </form>
   </ion-toolbar>
-
-
-<!-- <ion-footer>
-  <ion-toolbar>
-    <div id="footer">
-      <div class="elem"><ion-input type="text" [(ngModel)]="message"></ion-input></div>
-      <div class="elem"><button ion-button icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon> </button></div>
-    </div>
-  </ion-toolbar>
-</ion-footer> -->
 </ion-footer>
