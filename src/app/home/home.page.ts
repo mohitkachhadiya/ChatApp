@@ -23,78 +23,91 @@ export class HomePage {
     public userService: UserService, private db: AngularFireDatabase, public alertController: AlertController) {
 
     this.getdata();
-    this.userInfo = JSON.parse(localStorage.getItem('uid'));
+    this.userInfo = JSON.parse(localStorage.getItem('currentUser'));
     console.log("the userInfo is the =======>", this.userInfo); 
 
-    firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
-      if (user) {
-        localStorage.setItem('uid', JSON.stringify(user));
-        console.log("the user is ==>", user);
-        navCtrl.navigateRoot(['/'])
-      }
-      else {
-        navCtrl.navigateRoot(['/login'])
-      }
-    });
+    // firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
+      //     console.log("the user is ==>", user);
+      //   if (user) {
+        //     localStorage.setItem('uid', JSON.stringify(user));
+        //     navCtrl.navigateRoot(['/'])
+        //   }
+        //   else {
+          //     navCtrl.navigateRoot(['/login'])
+          //   }
+          // });
 
-    if (localStorage.getItem('uid')) {
-      this.uid = JSON.parse(localStorage.getItem("uid")).uid;
-      console.log("the uid is the ====>", this.uid); 
-    }
-  }
-
-  gotoChat(uid, value){
-    sessionStorage.setItem("uid", uid);
-    sessionStorage.setItem("name", value.name);
-    sessionStorage.setItem("username", value.username);
-
-    this.navCtrl.navigateForward("/chat");
-  }
-
-  getdata(){
-    this.db.list('users').valueChanges().subscribe(data => {
-      this.allUsers = data;
-      console.log("subject", data);
-
-      this.users = data.filter((userMessage:any, ind) => {
-        let flag = false
-        data.forEach((o_userMessage:any, index)=>{
-          if(userMessage.uid == this.uid){
-            flag = true
-            return false
+          if (localStorage.getItem('currentUser')) {  
+            this.uid = JSON.parse(localStorage.getItem("currentUser")).uid;
+            console.log("the uid is the ====>", this.uid); 
           }
-        });
-        if(!flag){
-          return userMessage
+          else{
+            navCtrl.navigateRoot(['/login'])
+          }
         }
-      });
-    });
 
-    console.log("the user data is the ======>", this.users);
-  }
+        gotoChat(uid, value){
+          sessionStorage.setItem("uid", uid);
+          sessionStorage.setItem("name", value.name);
+          sessionStorage.setItem("username", value.username);
 
-  async delete() {
-    const alert = await this.alertController.create({
-      header: 'Confirm!',
-      message: 'Are you sure want to delete this user?',
-      buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        cssClass: 'secondary',
-        handler: (blah) => {
-          console.log('cancel');
+          this.navCtrl.navigateForward("/chat");
         }
-      }, {
-        text: 'Okay',
-        handler: () => {
-          firebase.database().ref('users/'+this.uid).remove();
-          this.navCtrl.navigateForward(['/login']);
+
+        membersId: any = [];
+
+        getdata(){
+          this.db.list('users').valueChanges().subscribe(data => {
+            this.allUsers = data;
+            console.log("subject", data);
+
+            this.users = data.filter((userMessage:any, ind) => {
+              let flag = false
+              data.forEach((o_userMessage:any, index)=>{
+                if(userMessage.uid == this.uid){
+                  flag = true
+                  return false
+                }
+              });
+              if(!flag){
+                return userMessage
+              }
+            });
+            console.log("the user data is the ======>", this.users);
+            this.users.forEach((item) => {
+              console.log("the item is the ========>", item);
+              this.membersId.push(item.uid);
+            })
+            console.log("the membersId is the =====>", this.membersId, this.users);
+            this.db.object("chats/" + this.uid).set({
+              participantUsers: this.users,
+              chatId: this.membersId
+            })
+          });
+        }
+
+        async delete() {
+          const alert = await this.alertController.create({
+            header: 'Confirm!',
+            message: 'Are you sure want to delete this user?',
+            buttons: [
+            {
+              text: 'Cancel',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: (blah) => {
+                console.log('cancel');
+              }
+            }, {
+              text: 'Okay',
+              handler: () => {
+                firebase.database().ref('users/' + this.uid).remove();
+                this.navCtrl.navigateForward(['/login']);
+                localStorage.removeItem('currentUser')
+              }
+            }
+            ]
+          });
+          await alert.present();
         }
       }
-      ]
-    });
-
-    await alert.present();
-  }
-}

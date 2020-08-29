@@ -16,6 +16,7 @@ declare let $: any;
 export class LoginPage implements OnInit {
 
   loginForm:FormGroup;
+  otpForm:FormGroup;
   verificationId: any;
   phoneNumber: number;
   verificationID: string = "";
@@ -39,6 +40,15 @@ export class LoginPage implements OnInit {
       code: new FormControl('', Validators.required),
       otp: new FormControl('', Validators.required),
     });
+
+    this.otpForm = new FormGroup({
+      first: new FormControl('', Validators.required),
+      second: new FormControl('', Validators.required),
+      third: new FormControl('', Validators.required),
+      forth: new FormControl('', Validators.required),
+      fifth: new FormControl('', Validators.required),
+      sixth: new FormControl('', Validators.required),
+    });
   }
 
   ngOnInit() {
@@ -57,6 +67,7 @@ export class LoginPage implements OnInit {
   }
 
   send(value) {
+    this.isError = false;
     var num = value.mobileNo.toString().length;
     console.log("called funcrion", value, num);    
     this.mobileNumber = value.code + value.mobileNo;
@@ -75,29 +86,33 @@ export class LoginPage implements OnInit {
         this.isVerify = true;
       }
     }).catch((error) => {
-      this.isError = true;
-      this.errorMessage = "Check your Mobile Number and try again";
       console.log("error", error);
     });
     this.loginForm.reset();
   }
+  
+  otpController(event,next,prev, index){
+    if(index == 6) {
+      console.log("submit")
+    }
+    if(event.target.value.length < 1 && prev){
+      prev.setFocus()
+    }
+    else if(next && event.target.value.length>0){
+      next.setFocus();
+    }
+    else {
+      return 0;
+    } 
+  }
 
   verify(value) {
+    console.log("the value is the ============>", value);
+    let otpCode = Object.values(value).join('').toString();
+    console.log("the pbject values is the =======>", otpCode);
+
     this.isError = false;
-    let code = value.otp.toString();
-
-    if (value.otp) {
-      this.isUser = true;
-      this.isActive = true;
-      this.isVerify = false;
-    }
-    console.log("the value of the otp is ==>", value, this.verificationID);
-    this.firebaseAuthentication.signInWithVerificationId(this.verificationID, code).then((user)=>{
-      console.log("the user is the ===>", user);
-      this.userInfo = user;
-    });
-    this.loginForm.reset();
-
+    console.log("the otpCode is the ============>", otpCode, otpCode.length);
     var allUsersData = this.allUsers.filter((userMessage:any, ind) => {
       let flag = false
       this.allUsers.forEach((o_userMessage:any, index)=>{
@@ -113,32 +128,48 @@ export class LoginPage implements OnInit {
 
     console.log("the allData is the =========>", allUsersData);
     if (allUsersData[0]) {
-      localStorage.setItem('uid', JSON.stringify(allUsersData[0]));
+      localStorage.setItem('currentUser', JSON.stringify(allUsersData[0]));
       this.navCtrl.navigateRoot(['/']);
     }
-  }
 
-  sendDetail(value){
-    this.isError = false;
-    if (value.name == '' && value.username == '') {
+    if (otpCode.length != 6) {
       this.isError = true;
-      this.errorMessage = "Please Enter Your Details";
+      this.errorMessage = "Invalid Otp"; 
     }
-    this.firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
-      if (user) {
-        console.log("the user is ==>", user);
-        this.afDB.object("users/" + user.uid).set({
-          name: value.name,
-          username: value.username,
-          mobileNo: user.phoneNumber,
-          createdAt: Date.now(),
-          uid: user.uid
-        }).then(() => {
-          localStorage.setItem('uid', JSON.stringify(user));
-          console.log("the demo is ====>", user);
-          this.navCtrl.navigateRoot(['/']);
-        });
+    else {
+      this.isUser = true;
+      this.isActive = true;
+      this.isVerify = false;
+    }
+    console.log("the value of the otp is ==>", value, this.verificationID);
+    this.firebaseAuthentication.signInWithVerificationId(this.verificationID, otpCode).then((user)=>{
+        console.log("the user is the ===>", user);
+        this.userInfo = user;
+      });
+      this.loginForm.reset();
+    }
+
+    sendDetail(value){
+      this.isError = false;
+      if (value.name == '' && value.username == '') {
+        this.isError = true;
+        this.errorMessage = "Please Enter Your Details";
       }
-    })
+      this.firebaseAuthentication.onAuthStateChanged().subscribe((user) => {
+        if (user) {
+          console.log("the user is ==>", user);
+          this.afDB.object("users/" + user.uid).set({
+            name: value.name,
+            username: value.username,
+            mobileNo: user.phoneNumber,
+            createdAt: Date.now(),
+            uid: user.uid
+          }).then(() => {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            console.log("the demo is ====>", user);
+            this.navCtrl.navigateRoot(['/']);
+          });
+        }
+      })
+    }
   }
-}

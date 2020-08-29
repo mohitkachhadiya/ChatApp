@@ -31,7 +31,7 @@ export class ChatPage implements OnInit{
 		this.o_uid = sessionStorage.getItem("uid");
 		this.name = sessionStorage.getItem("name");
 
-		this.uid = JSON.parse(localStorage.getItem("uid")).uid;
+		this.uid = JSON.parse(localStorage.getItem("currentUser")).uid;
 
 		this.chatForm = new FormGroup({
 			username: new FormControl('', Validators.required),

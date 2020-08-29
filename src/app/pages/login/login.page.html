@@ -3,42 +3,59 @@
 
   <div *ngIf="!isActive">
     <form [formGroup]='loginForm'>
-        <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
-        <ion-item>
-            <ion-select placeholder="+" formControlName="code" interface="popover">
-              <ion-label>Select Country Code</ion-label>
-              <div *ngFor="let i of countries" ><ion-select-option [value]=i.dial_code (click)="selectValue(i.dial_code)">{{i.dial_code}}</ion-select-option></div>
+      <ion-label position="stacked">Mobile No. <span class="text-danger">*</span></ion-label>
+      <ion-item>
+        <ion-select placeholder="+" formControlName="code" interface="popover">
+          <ion-label>Select Country Code</ion-label>
+          <div *ngFor="let i of countries" ><ion-select-option [value]=i.dial_code (click)="selectValue(i.dial_code)">{{i.dial_code}}</ion-select-option></div>
         </ion-select>
         <ion-input type="number" placeholder="Enter Your No..." name="mobileNo" formControlName="mobileNo" pattern="^((\\+91-?)|0)?[0-9]{10}$"></ion-input>
-  </ion-item>
-  <ion-button class="ion-margin-top" expand="block" type="submit" (click)="send(loginForm.value)">Send Otp</ion-button>
-</form>
-        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
-</div>
+      </ion-item>
+      <ion-button class="ion-margin-top" expand="block" type="submit" (click)="send(loginForm.value)">Send Otp</ion-button>
+    </form>
+    <p *ngIf="isError" class="h6 mt-3 text-center text-danger cl">{{errorMessage}}</p>   
+  </div>
 
-<div *ngIf="isVerify">
-    <form [formGroup]='loginForm'>
-      <ion-item>
-        <ion-input type="number" placeholder="Enter Otp" formControlName="otp" ></ion-input>
-  </ion-item>
-  <ion-button class="ion-margin-top" expand="block" (click)="verify(loginForm.value)">Verify</ion-button>
-</form>
-        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
-</div>
+  <div *ngIf="isVerify">
+    <ion-row>
+      <ion-col>
+        <ion-label position="stacked">Enter Your Otp<span class="text-danger">*</span></ion-label>
+        <form [formGroup]='otpForm' class="otp_form">
+          <ion-input class="x" #otp1 required="true" type="number" maxLength="1" formControlName="first" (keyup)="otpController($event,otp2,'')">
+          </ion-input>
+          <ion-input class="x" #otp2 required="true" type="number" maxLength="1" formControlName="second" (keyup)="otpController($event,otp3,otp1)">
+          </ion-input>
+          <ion-input class="x" #otp3 required="true" type="number" maxLength="1" formControlName="third" (keyup)="otpController($event,otp4,otp2)">
+          </ion-input>
 
-<div *ngIf="isUser">
+          <ion-input class="x" #otp4 required="true" type="number" maxLength="1" formControlName="forth" (keyup)="otpController($event,otp5,otp3)">
+          </ion-input>
+
+          <ion-input class="x"  #otp5 required="true" type="number" maxLength="1" formControlName="fifth" (keyup)="otpController($event,otp6,otp4)">
+          </ion-input>
+
+          <ion-input class="x" #otp6 required="true" type="number" maxLength="1" formControlName="sixth" (keyup)="otpController($event,'',otp5)">
+          </ion-input>
+          <ion-button class="ion-margin-top mt-3" expand="block" (click)="verify(otpForm.value)">Verify</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+    <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
+  </div>
+
+  <div *ngIf="isUser">
     <form [formGroup]='loginForm'>
       <ion-item>
         <ion-label position="stacked">Name. <span class="text-danger">*</span></ion-label>
         <ion-input type="text" placeholder="Enter Your Name." name="mobileNo" formControlName="name"></ion-input>
-  </ion-item>
-  <ion-item>
+      </ion-item>
+      <ion-item>
         <ion-label position="stacked">User name. <span class="text-danger">*</span></ion-label>
         <ion-input type="text" placeholder="Enter your Username." name="username" formControlName="username"></ion-input>
-  </ion-item>
-  <ion-button class="ion-margin-top" expand="block" type="submit" (click)="sendDetail(loginForm.value)">Login</ion-button>
-</form>
-        <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
-</div>
+      </ion-item>
+      <ion-button class="ion-margin-top" expand="block" type="submit" (click)="sendDetail(loginForm.value)">Login</ion-button>
+    </form>
+    <p *ngIf="isError" class="h6 mt-3 text-center text-danger">{{errorMessage}}</p>   
+  </div>
 
 </ion-content>

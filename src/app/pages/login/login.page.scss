@@ -27,10 +27,23 @@ ion-item {
 	margin-top: 15px;
 }
 
+p{
+    text-align: center;
+}
 
 
 
 
-
-
-
+.otp_form {
+  margin-top: 18px;
+  text-align: center;
+}
+.x{
+  display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    border-radius: 18%;
+    --background: #e1e1e1;
+    --padding-start: 7px;
+  }
