@@ -17,10 +17,10 @@ import { FormGroup , FormControl, Validators } from '@angular/forms';
 export class ChatPage implements OnInit{
 	chatForm:FormGroup;
 	name;
-	o_uid;
+	receiver_id;
 	usersname = sessionStorage.getItem('username');
 	username;
-	uid;
+	sender_id;
 
 	chats = [];
 	textMsg;
@@ -28,10 +28,10 @@ export class ChatPage implements OnInit{
 	constructor(public navCtrl: NavController, public firebaseAuthentication: FirebaseAuthentication, public db: AngularFireDatabase) {
 
 		this.username = sessionStorage.getItem("username");
-		this.o_uid = sessionStorage.getItem("uid");
+		this.receiver_id = sessionStorage.getItem("uid");
 		this.name = sessionStorage.getItem("name");
 
-		this.uid = JSON.parse(localStorage.getItem("currentUser")).uid;
+		this.sender_id = JSON.parse(localStorage.getItem("currentUser")).uid;
 
 		this.chatForm = new FormGroup({
 			username: new FormControl('', Validators.required),
@@ -40,13 +40,16 @@ export class ChatPage implements OnInit{
 	}
 
 	ionViewWillEnter(){
-		this.db.list('chat').valueChanges().subscribe(data => {
+		this.db.list('Messages').valueChanges().subscribe(data => {
 			console.log("subject", data);
 
 			this.chats = data.filter((userMessage:any, ind) => {
 				let flag = false
+				console.log("the userMessage is the =========>", userMessage);
 				data.forEach((o_userMessage:any, index)=>{
-					if(userMessage.username != this.username){
+				// console.log("the o_userMessage is the =========>", o_userMessage);
+
+					if(userMessage.sender_id == this.sender_id){
 						flag = true
 						return false
 					}
@@ -54,6 +57,8 @@ export class ChatPage implements OnInit{
 				if(!flag){
 					return userMessage
 				}
+			console.log("created user ============>" , data);
+
 			});
 			console.log("Absent user ============>" , this.chats);
 		});
@@ -66,11 +71,11 @@ export class ChatPage implements OnInit{
 		value.username = this.username
 		console.log("the function is called", value);
 
-		this.db.list('/chat').push({
+		this.db.list('/Messages').push({
 			username: value.username,
 			message: value.textMsg,
-			uid:this.uid,
-			o_uid: this.o_uid,
+			sender_id:this.sender_id,
+			receiver_id: this.receiver_id,
 		});
 
 		this.chatForm.reset();

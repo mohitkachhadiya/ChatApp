@@ -22,7 +22,6 @@ export class HomePage {
   constructor(public navCtrl: NavController, public firebaseAuthentication: FirebaseAuthentication, private afs: AngularFirestore, 
     public userService: UserService, private db: AngularFireDatabase, public alertController: AlertController) {
 
-    this.getdata();
     this.userInfo = JSON.parse(localStorage.getItem('currentUser'));
     console.log("the userInfo is the =======>", this.userInfo); 
 
@@ -39,6 +38,7 @@ export class HomePage {
 
           if (localStorage.getItem('currentUser')) {  
             this.uid = JSON.parse(localStorage.getItem("currentUser")).uid;
+            this.getdata();
             console.log("the uid is the ====>", this.uid); 
           }
           else{
@@ -74,14 +74,8 @@ export class HomePage {
               }
             });
             console.log("the user data is the ======>", this.users);
-            this.users.forEach((item) => {
-              console.log("the item is the ========>", item);
-              this.membersId.push(item.uid);
-            })
-            console.log("the membersId is the =====>", this.membersId, this.users);
             this.db.object("chats/" + this.uid).set({
               participantUsers: this.users,
-              chatId: this.membersId
             })
           });
         }
